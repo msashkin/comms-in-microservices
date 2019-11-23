@@ -13,10 +13,11 @@
     <url>https://github.com/msashkin/comms-in-microservices</url>
 
     <modules>
-        <module>api</module>
+        <module>pubsub-api</module>
+        <module>pubsub-rabbitmq</module>
         <module>consumer-1</module>
         <module>consumer-2</module>
-        <module>publisher</module>
+        <module>rest-service</module>
     </modules>
 
     <properties>
@@ -28,6 +29,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.msashkin</groupId>
+                <artifactId>pubsub-api</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.msashkin</groupId>
+                <artifactId>pubsub-rabbitmq</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
