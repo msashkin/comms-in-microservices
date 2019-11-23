@@ -1,0 +1,19 @@
+package com.msashkin.config;
+
+import com.msashkin.pubsub.MessagePublisher;
+import com.msashkin.pubsub.rabbitmq.RabbitMessagePublisher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RestServiceConfig {
+
+    // TODO: extract this to properties
+    private static final String RABBITMQ_HOST = "localhost";
+    private static final String RABBITMQ_EXCHANGE_NAME = "hello_exchange";
+
+    @Bean
+    public MessagePublisher messagePublisher() {
+        return new RabbitMessagePublisher(RABBITMQ_HOST, RABBITMQ_EXCHANGE_NAME);
+    }
+}
