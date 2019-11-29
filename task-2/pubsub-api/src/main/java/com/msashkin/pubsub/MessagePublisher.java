@@ -2,5 +2,5 @@ package com.msashkin.pubsub;
 
 public interface MessagePublisher {
 
-    void publish(String topic, Message message);
+    void publish(String topic, Object message);
 }

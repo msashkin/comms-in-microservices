@@ -1,8 +1,7 @@
 package com.msashkin.controller;
 
-import com.msashkin.pubsub.Message;
-import com.msashkin.pubsub.MessagePublisher;
 import com.msashkin.model.MessageRequest;
+import com.msashkin.pubsub.MessagePublisher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,6 @@ public class ProducerController {
 
     @PostMapping("/publish")
     void publish(@RequestBody MessageRequest messageRequest) {
-        messagePublisher.publish(messageRequest.getTopic(), new Message(messageRequest.getMessage()));
+        messagePublisher.publish(messageRequest.getTopic(), messageRequest.getMessage());
     }
 }
