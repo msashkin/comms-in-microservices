@@ -6,5 +6,5 @@ public interface MessageSubscriber {
 
     void unsubscribe(String topic);
 
-    void onMessage(String topic, String message);
+    void onMessage(String topic, Object message);
 }

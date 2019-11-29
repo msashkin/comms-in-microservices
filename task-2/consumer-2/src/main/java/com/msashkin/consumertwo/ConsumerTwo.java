@@ -1,5 +1,6 @@
 package com.msashkin.consumertwo;
 
+import com.msashkin.pubsub.mapper.MessageMapperFactory;
 import com.msashkin.pubsub.rabbitmq.RabbitMessageSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,8 @@ public class ConsumerTwo extends RabbitMessageSubscriber implements CommandLineR
     private static final String RABBITMQ_HOST = "localhost";
     private static final String RABBITMQ_EXCHANGE_NAME = "hello_exchange";
 
-    public ConsumerTwo() {
-        super(RABBITMQ_HOST, RABBITMQ_EXCHANGE_NAME);
+    public ConsumerTwo(MessageMapperFactory messageMapperFactory) {
+        super(messageMapperFactory, RABBITMQ_HOST, RABBITMQ_EXCHANGE_NAME);
     }
 
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class ConsumerTwo extends RabbitMessageSubscriber implements CommandLineR
     }
 
     @Override
-    public void onMessage(String topic, String message) {
+    public void onMessage(String topic, Object message) {
         LOG.info("Received from " + topic + " : " + message);
     }
 
