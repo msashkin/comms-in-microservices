@@ -1,6 +1,10 @@
 package com.msashkin.pubsub;
 
-public interface MessagePublisher {
+import com.msashkin.pubsub.model.MessageWrapper;
 
-    void publish(String topic, Object message);
+public interface MessagePublisher<T> {
+
+    void publish(String topic, T message);
+
+    void publishWrapper(String topic, MessageWrapper<T> messageWrapper);
 }

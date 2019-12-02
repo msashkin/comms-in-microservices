@@ -1,6 +1,7 @@
 package com.msashkin.consumertwo.config;
 
 import com.msashkin.pubsub.mapper.MessageMapperFactory;
+import com.msashkin.pubsub.model.MessageWrapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class ConsumerTwoConfig {
 
     @Bean
-    MessageMapperFactory messageMapperFactory() {
-        return new MessageMapperFactory();
+    MessageMapperFactory<MessageWrapper<String>> messageMapperFactory() {
+        return new MessageMapperFactory<>();
     }
 }

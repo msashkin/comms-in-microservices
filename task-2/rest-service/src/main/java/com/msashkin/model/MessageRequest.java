@@ -1,10 +1,16 @@
 package com.msashkin.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class MessageRequest {
 
+    @NotBlank
     private String message;
 
+    @NotBlank
     private String topic;
+
+    private String forwardToTopic;
 
     public MessageRequest() {
     }
@@ -23,5 +29,13 @@ public class MessageRequest {
 
     public void setTopic(String topic) {
         this.topic = topic;
+    }
+
+    public String getForwardToTopic() {
+        return forwardToTopic;
+    }
+
+    public void setForwardToTopic(String forwardToTopic) {
+        this.forwardToTopic = forwardToTopic;
     }
 }

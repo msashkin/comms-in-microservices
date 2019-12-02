@@ -1,11 +1,11 @@
 package com.msashkin.pubsub.mapper;
 
-public class MessageMapperFactory {
+public class MessageMapperFactory<T> {
 
-    public MessageMapper create(String contentType) {
+    public MessageMapper<T> create(String contentType) {
         switch (contentType) {
             case "application/json":
-                return new JsonMessageMapper();
+                return new JsonMessageMapper<>();
             default:
                 throw new IllegalArgumentException("Unknown content type");
         }

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class JsonMessageMapper implements MessageMapper {
+public class JsonMessageMapper<T> implements MessageMapper<T> {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
     public String getContentType() {
@@ -13,20 +15,18 @@ public class JsonMessageMapper implements MessageMapper {
     }
 
     @Override
-    public byte[] fromObject(Object object) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public byte[] fromObject(T object) throws MessageMapperException {
         try {
-            return objectMapper.writeValueAsBytes(object);
+            return OBJECT_MAPPER.writeValueAsBytes(object);
         } catch (JsonProcessingException e) {
             throw new MessageMapperException(e.getMessage());
         }
     }
 
     @Override
-    public Object fromMessage(byte[] message, Class clazz) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public T fromMessage(byte[] message, Class<T> clazz) throws MessageMapperException {
         try {
-            return objectMapper.readValue(message, clazz);
+            return OBJECT_MAPPER.readValue(message, clazz);
         } catch (IOException e) {
             throw new MessageMapperException(e.getMessage());
         }
