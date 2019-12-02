@@ -3,6 +3,7 @@ package com.msashkin.pubsub.rabbitmq;
 import com.msashkin.pubsub.MessageSubscriber;
 import com.msashkin.pubsub.mapper.MessageMapper;
 import com.msashkin.pubsub.mapper.MessageMapperFactory;
+import com.msashkin.pubsub.model.MessageWrapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -15,15 +16,15 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public abstract class RabbitMessageSubscriber implements MessageSubscriber {
+public abstract class RabbitMessageSubscriber<T> implements MessageSubscriber<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RabbitMessageSubscriber.class);
 
-    private final MessageMapperFactory messageMapperFactory;
+    private final MessageMapperFactory<MessageWrapper<T>> messageMapperFactory;
     private final String rabbitMqHost;
     private final String rabbitMqExchangeName;
 
-    public RabbitMessageSubscriber(MessageMapperFactory messageMapperFactory,
+    public RabbitMessageSubscriber(MessageMapperFactory<MessageWrapper<T>> messageMapperFactory,
                                    String rabbitMqHost,
                                    String rabbitMqExchangeName) {
         this.messageMapperFactory = messageMapperFactory;
@@ -59,9 +60,12 @@ public abstract class RabbitMessageSubscriber implements MessageSubscriber {
                     String contentType = properties.getContentType();
                     long deliveryTag = envelope.getDeliveryTag();
                     try {
-                        MessageMapper messageMapper = messageMapperFactory.create(contentType);
-                        Object message = messageMapper.fromMessage(body, Class.forName(properties.getType()));
-                        onMessage(routingKey, message);
+                        MessageMapper<MessageWrapper<T>> messageMapper = messageMapperFactory.create(contentType);
+                        MessageWrapper<T> messageWrapper = messageMapper.fromMessage(body,
+                                                                                     (Class<MessageWrapper<T>>) Class.forName(
+                                                                                             properties.getType()));
+                        onMessageWrapper(topic, messageWrapper);
+                        onMessage(routingKey, messageWrapper.getMessage());
                         channel.basicAck(deliveryTag, false);
                     } catch (Exception e) {
                         channel.basicNack(deliveryTag, false, true);

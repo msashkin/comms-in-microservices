@@ -1,10 +1,10 @@
 package com.msashkin.pubsub.mapper;
 
-public interface MessageMapper {
+public interface MessageMapper<T> {
 
     String getContentType();
 
-    byte[] fromObject(Object object);
+    byte[] fromObject(T object) throws MessageMapperException;
 
-    Object fromMessage(byte[] message, Class clazz);
+    T fromMessage(byte[] message, Class<T> clazz) throws MessageMapperException;
 }
