@@ -39,11 +39,18 @@ public class ConsumerOne extends RabbitMessageSubscriber<String> implements Comm
     public void onMessageWrapper(String topic, MessageWrapper<String> messageWrapper) {
         LOG.info("Received from " + topic + " : " + messageWrapper);
 
+        String forwardToTopic = messageWrapper.getForwardToTopic();
+        if (forwardToTopic == null || forwardToTopic.isBlank()) {
+            return;
+        }
+
+        LOG.info("Forward to " + topic + " : " + messageWrapper);
+
+        messagePublisher.publishWrapper(forwardToTopic, messageWrapper);
     }
 
     @Override
     public void run(String... args) throws Exception {
         subscribe("hello");
-        subscribe("hello_fwd");
     }
 }

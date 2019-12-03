@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: on-failure
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  rest-service:
+    image: gcr.io/comms-in-microservices/rest-service:0.0.1-SNAPSHOT
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+
+  consumer-1:
+    image: gcr.io/comms-in-microservices/consumer-1:0.0.1-SNAPSHOT
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+
+  consumer-2:
+    image: gcr.io/comms-in-microservices/consumer-2:0.0.1-SNAPSHOT
+    restart: on-failure
+    depends_on:
+      - rabbitmq
