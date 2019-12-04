@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rpc-service-1
+spec:
+  selector:
+    matchLabels:
+      app: rpc-service-1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rpc-service-1
+    spec:
+      containers:
+        - name: rpc-service-1
+          image: "gcr.io/comms-in-microservices/task-1-rpc-service-1:latest"
+          ports:
+            - containerPort: 50051

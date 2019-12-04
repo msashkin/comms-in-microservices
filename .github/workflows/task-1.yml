@@ -1,0 +1,84 @@
+name: Task 1
+
+on:
+  push:
+    branches:
+      - task-1
+
+jobs:
+  build-docker-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        name: Checkout
+
+      - name: Build web-service-1
+        run: cd ./task-1/web-service-1/ && ./mvnw clean package
+      - name: Build web-service-1 docker image
+        run: docker build --file ./task-1/web-service-1/Dockerfile --tag gcr.io/comms-in-microservices/task-1-web-service-1:latest ./task-1/web-service-1/
+
+      - name: Build web-service-2
+        run: cd ./task-1/web-service-2/ && ./mvnw clean package
+      - name: Build web-service-2 docker image
+        run: docker build --file ./task-1/web-service-2/Dockerfile --tag gcr.io/comms-in-microservices/task-1-web-service-2:latest ./task-1/web-service-2/
+
+      - name: Build rpc-service-1
+        run: cd ./task-1/rpc-service-1/ && ./mvnw clean package
+      - name: Build rpc-service-1 docker image
+        run: docker build --file ./task-1/rpc-service-1/Dockerfile --tag gcr.io/comms-in-microservices/task-1-rpc-service-1:latest ./task-1/rpc-service-1/
+
+      - name: Build rpc-service-2
+        run: cd ./task-1/rpc-service-2/ && ./mvnw clean package
+      - name: Build rpc-service-2 docker image
+        run: docker build --file ./task-1/rpc-service-2/Dockerfile --tag gcr.io/comms-in-microservices/task-1-rpc-service-2:latest ./task-1/rpc-service-2/
+
+  # deploy:
+  #   needs: build-docker-images
+
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #       name: Checkout
+
+  #     - uses: actions-hub/gcloud@master
+  #       name: Install kubectl
+  #       env:
+  #         PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+  #         APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #       with:
+  #         args: components install kubectl
+
+  #     - uses: actions-hub/gcloud@master
+  #       name: GCP set compute zone
+  #       env:
+  #         PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+  #         APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #       with:
+  #         args: config set compute/zone us-central1-b
+
+  #     - uses: actions-hub/gcloud@master
+  #       name: GCP configure docker
+  #       env:
+  #         PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+  #         APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #       with:
+  #         args: auth configure-docker --quiet
+
+  #     - uses: actions-hub/gcloud@master
+  #       name: Generate kubeconfig entry
+  #       env:
+  #         PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+  #         APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #       with:
+  #         args: container clusters get-credentials ${{ secrets.GCLOUD_PROJECT_ID }}-task-1
+
+  #     - name: Deploy web-service
+  #       run: cd ./task-1/web-service/ && kubectl apply -f deployment.yml
+
+  #     - name: Deploy web-service
+  #       run: cd ./task-1/web-service/ && kubectl apply -f service.yml
+
+  #     - name: Get web-service
+  #       run: kubectl get service web-service
