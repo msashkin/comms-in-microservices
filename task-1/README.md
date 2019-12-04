@@ -63,3 +63,10 @@ Update an image:
 ```sh
 kubectl set image <object_type>/<object_name> <container_name>=<new_image_to_use>
 ```
+
+Configuration parameters :
+
+With the containerized Spring micro-service application it is more convenient to use simple OS environment variables instead of config files.
+The main reason is because when you need a config change, with config files you would need to rebuild whole container image and re-deploy the service in cluster.
+While with environment variables you can just update the deployment configuration.
+https://dzone.com/articles/configuring-spring-boot-on-kubernetes-with-configm
