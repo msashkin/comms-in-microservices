@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service-1
+spec:
+  selector:
+    matchLabels:
+      app: web-service-1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web-service-1
+    spec:
+      containers:
+        - name: web-service-1
+          image: "gcr.io/comms-in-microservices/task-1-web-service-1:latest"
+          ports:
+            - containerPort: 8080

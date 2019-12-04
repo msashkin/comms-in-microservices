@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "web-service.rpc.one.host",
+      "type": "java.lang.String",
+      "description": "gRPC service 1 host."
+    },
+    {
+      "name": "web-service.rpc.one.port",
+      "type": "java.lang.String",
+      "description": "gRPC service 1 port."
+    },
+    {
+      "name": "web-service.rpc.two.host",
+      "type": "java.lang.String",
+      "description": "gRPC service 2 host."
+    },
+    {
+      "name": "web-service.rpc.two.port",
+      "type": "java.lang.String",
+      "description": "gRPC service 2 port."
+    }
+  ]
+}
